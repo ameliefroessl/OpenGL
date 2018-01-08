@@ -6,9 +6,9 @@ In this file I will document the process. Starting with library/dependency insta
 
 Currently compiling as : `g++ window.cpp 02_triangle_shader.cpp shader.cpp -o window -lglew -lglfw -framework OpenGL `
 
-producing image like in tutorial: 
+producing red triangle like in the tutorial: 
 
-[red triangle]()
+![red triangle](images/red_triangle.png)
 
 
 I might have had certain dependencies/ libraries installed before. I will only list the libraries I had to install personally. 
