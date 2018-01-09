@@ -2,6 +2,15 @@
 In this file I will document the process. Starting with library/dependency installations and will keep a documentation of the progress. Most recent updates will be at the top. 
 
 
+**using GLM for matrice calculations **
+
+*install:*
+
+  * installed with homebrew: 
+
+    * `brew install glm`
+
+
 **Red Triangle**
 
 Currently compiling as : `g++ window.cpp 02_triangle_shader.cpp shader.cpp -o window -lglew -lglfw -framework OpenGL `
