@@ -2,7 +2,7 @@
 In this file I will document the process. Starting with library/dependency installations and will keep a documentation of the progress. Most recent updates will be at the top. 
 
 
-**using GLM for matrice calculations **
+**GLM for matrice calculations**
 
 *install:*
 
