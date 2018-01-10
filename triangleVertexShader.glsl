@@ -8,7 +8,7 @@ void main(){
     
     //with Model view projection matrix
     gl_Position = MVP * vec4(vertexPosition_modelspace,1.0f);
-
+    
     //without MVP matrix
     //gl_Position.xyz = vertexPosition_modelspace;
     //gl_Position.w = 1.0;

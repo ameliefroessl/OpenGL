@@ -125,7 +125,7 @@ GLuint loadShaders(const char * vertex_file_path,const char * fragment_file_path
 // creates a Vertex Array Object and binds it to an ID
 //https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Array_Object
 GLuint createVAO(){
-
+    
     GLuint VertexArrayID;
     glGenVertexArrays(1, &VertexArrayID);
     glBindVertexArray(VertexArrayID);
@@ -135,7 +135,7 @@ GLuint createVAO(){
 
 //creates the verticies of a triangle centers on the middle of a coordinate system and returns the vertexbuffer
 GLuint createTriangle(){
-
+    
     static const GLfloat g_vertex_buffer_data[] = {
         -1.0f, -1.0f, 0.0f,
         1.0f, -1.0f, 0.0f,
@@ -159,7 +159,7 @@ glm::mat4 modelViewProjection(bool proj){
     
     if (proj){
         // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-       projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+        projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
         
     }else{
         // Or, for an ortho camera :
