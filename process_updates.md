@@ -1,6 +1,16 @@
 
 In this file I will document the process. Starting with library/dependency installations and will keep a documentation of the progress. Most recent updates will be at the top. 
 
+**Model View Projection Matrix for Shader**
+
+Creating the Model view projection matrix to translate the camera/object within the space. Currently the Triangle is located at the origin but the camer is translate away from the origin and looking at the world coordinate system origin.
+
+![yellow triangle from camera position: (4,3,3)](images/camera_at_4_3_3.png)
+
+![yellow triangle from camera position: (0,3,3)](images/camera_at_0_3_3.png)
+
+Currently compiling as : `g++ window.cpp helper.cpp -o window -lglew -lglfw -framework OpenGL`
+
 
 **GLM for matrice calculations**
 

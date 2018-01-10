@@ -9,9 +9,17 @@
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
 
+//import glm
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp> //for matirx transformations
+#include "glm/gtx/string_cast.hpp"
+#include "glm/ext.hpp" // for mat to string conversions, terminal output
 
-#include "02_triangle_shader.h"
-#include "shader.h"
+
+
+using namespace glm;
+
+#include "helper.hpp"
 
 //code from http://www.opengl-tutorial.org/beginners-tutorials/tutorial-1-opening-a-window/
 
@@ -27,7 +35,6 @@ int main() {
 	}
 
 
-	
 
 	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
@@ -53,17 +60,19 @@ int main() {
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
 
-
-	GLuint vao = createVAO(); //create and bind VAO, needs to happen after winodw creation
-	GLuint vb = createTriangle();
-
-	GLuint programID = loadShaders( "triangleVertexShader.glsl", "triangleFragmentShader.glsl" );
+    GLuint vao = createVAO(); //create and bind VAO, needs to happen after winodw creation
+    GLuint vb = createTriangle(); //create triangle vertecies and returna buffer handle to buffer with them inside
+    glm::mat4 mvp = modelViewProjection(true); //get a model view projection matrix
+	GLuint programID = loadShaders( "triangleVertexShader.glsl", "triangleFragmentShader.glsl" );//load glsl shaders
+    GLuint matrixID = glGetUniformLocation(programID, "MVP"); //get handle to uniform varibale in vertex shader
 
 
 	do{
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glUseProgram(programID);
+        glUseProgram(programID);
+
+        glUniformMatrix4fv(matrixID, 1, GL_FALSE, &mvp[0][0]);
 
 	    glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vb);
@@ -76,10 +85,9 @@ int main() {
 		   (void*)0            // array buffer offset
 		);
 
-
-
+        
 		// Draw the triangle !
-		glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
+        glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
 		glDisableVertexAttribArray(0);
 
 	    // Swap buffers
@@ -89,5 +97,23 @@ int main() {
 	} // Check if the ESC key was pressed or the window was closed
 	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
 	glfwWindowShouldClose(window) == 0 );
+    
+    // Cleanup VBO and shader
+    glDeleteBuffers(1, &vb);
+    glDeleteProgram(programID);
+    glDeleteVertexArrays(1, &vao);
+    
+    // Close OpenGL window and terminate GLFW
+    glfwTerminate();
+    
+    return 0;
 
 }
+
+
+
+
+
+
+
+
