@@ -1,6 +1,10 @@
 
 In this file I will document the process. Starting with library/dependency installations and will keep a documentation of the progress. Most recent updates will be at the top. 
 
+**Rendering A cube**
+
+![flashing cube](images/flashing_cube.gif)
+
 **Model View Projection Matrix for Shader**
 
 Creating the Model view projection matrix to translate the camera/object within the space. Currently the Triangle is located at the origin but the camer is translate away from the origin and looking at the world coordinate system origin.
