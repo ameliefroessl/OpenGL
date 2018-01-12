@@ -3,6 +3,8 @@ In this file I will document the process. Starting with library/dependency insta
 
 **Rendering A cube**
 
+Rendering a cube with random vertex colors, which are updated in each frame.
+
 ![flashing cube](images/flashing_cube.gif)
 
 **Model View Projection Matrix for Shader**

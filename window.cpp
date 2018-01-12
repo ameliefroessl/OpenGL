@@ -62,9 +62,18 @@ int main() {
     
     GLuint vao = createVAO(); //create and bind VAO, needs to happen after winodw creation
     GLuint vb = createTriangle(); //create triangle vertecies and returna buffer handle to buffer with them inside
+    GLuint vbCube = createCube();
+    
     glm::mat4 mvp = modelViewProjection(true); //get a model view projection matrix
     GLuint programID = loadShaders( "triangleVertexShader.glsl", "triangleFragmentShader.glsl" );//load glsl shaders
     GLuint matrixID = glGetUniformLocation(programID, "MVP"); //get handle to uniform varibale in vertex shader
+    
+    //z-buffer depth test enabling
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);// Accept fragment if it closer to the camera than the former one
+    
+    GLuint colorbuffer = genAndBindBufferID();
+    static GLfloat g_color_buffer_data[12*3*3]; //buffer holding color information
     
     
     do{
@@ -75,7 +84,7 @@ int main() {
         glUniformMatrix4fv(matrixID, 1, GL_FALSE, &mvp[0][0]);
         
         glEnableVertexAttribArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, vb);
+        glBindBuffer(GL_ARRAY_BUFFER, vbCube);
         glVertexAttribPointer(
                               0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
                               3,                  // size
@@ -85,9 +94,16 @@ int main() {
                               (void*)0            // array buffer offset
                               );
         
+
+        fillColorBuffer(g_color_buffer_data, 12*3); //reload the color buffer every frame
+
+        glEnableVertexAttribArray(1);
+        glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
+        glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,0,(void*)0); 
         
-        // Draw the triangle !
-        glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
+        // Draw the triangle (s) !
+        glDrawArrays(GL_TRIANGLES, 0, 3*12); // Starting from vertex 0; 3 vertices total -> 1 triangle or for the cube... we have 12 triangle
         glDisableVertexAttribArray(0);
         
         // Swap buffers
@@ -99,7 +115,7 @@ int main() {
           glfwWindowShouldClose(window) == 0 );
     
     // Cleanup VBO and shader
-    glDeleteBuffers(1, &vb);
+    glDeleteBuffers(1, &vbCube);
     glDeleteProgram(programID);
     glDeleteVertexArrays(1, &vao);
     

@@ -20,10 +20,24 @@ glm::mat4 modelViewProjection();
 // creates a Vertex Array Object and binds it to an ID
 GLuint createVAO();
 
+//generate and bind a buffer id
+GLuint genAndBindBufferID();
 
+//creates the vertices of a triangle and the buffer and fill it
 GLuint createTriangle();
 
+// same for cube
+GLuint createCube();
+
+//fills a buffer with set random cube colors
+GLuint createCubeColors();
+
+// fills a buffer with random cube colors, not set
+void fillColorBuffer(GLfloat * buffer, int bufferSize);
+
+//return a model view projection matrix
 glm::mat4 modelViewProjection(bool proj);
+
 
 
 #endif /* helper_hpp */
