@@ -1,6 +1,13 @@
 
 In this file I will document the process. Starting with library/dependency installations and will keep a documentation of the progress. Most recent updates will be at the top. 
 
+**Mouse Controls**
+
+making it mooove with the mouse. Although I took out the repositioning of the mouse curser from the tutorial.
+
+![mouse_control](images/mouse_control.gif)
+
+
 **Texturing a Cube**
 
 A textured cube:

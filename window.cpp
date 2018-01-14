@@ -58,6 +58,11 @@ int main() {
         return -1;
     }
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    
+    // Set the mouse at the center of the screen
+    glfwPollEvents();
+    glfwSetCursorPos(window, 1024/2, 768/2);
     
     glm::mat4 mvp = modelViewProjection(true); //get a model view projection matrix
     
@@ -88,6 +93,8 @@ int main() {
     
     
     do{
+        
+        mvp = liveModelViewProjectionMatrix(window);
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glUseProgram(programID);

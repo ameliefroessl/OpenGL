@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <GL/glew.h>
 
+#include <GLFW/glfw3.h>
 // loads the glsl shaders from the paths
 GLuint loadShaders(const char * vertex_file_path,const char * fragment_file_path);
 
@@ -43,6 +44,9 @@ void fillColorBuffer(GLfloat * buffer, int bufferSize);
 
 //return a model view projection matrix
 glm::mat4 modelViewProjection(bool proj);
+
+//get an updated model view projection matrix depending on mouse position
+glm::mat4 liveModelViewProjectionMatrix(GLFWwindow* window);
 
 
 
