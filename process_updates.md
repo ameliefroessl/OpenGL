@@ -5,11 +5,11 @@ In this file I will document the process. Starting with library/dependency insta
 
 A textured cube:
 
-![textured_cube](images/texture2.png)
+![textured_cube](images/texture_2.png)
 
-Messing around with the buffers procuded this:
+Messing around with the buffers procuded this :neckbeard::
 
-![random positions](images/random_vertices.gif)
+![random positions](images/random_triangles.gif)
 
 
 **Rendering a Cube**
