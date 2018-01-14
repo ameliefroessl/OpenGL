@@ -1,7 +1,18 @@
 
 In this file I will document the process. Starting with library/dependency installations and will keep a documentation of the progress. Most recent updates will be at the top. 
 
-**Rendering A cube**
+**Texturing a Cube**
+
+A textured cube:
+
+![textured_cube](images/texture2.png)
+
+Messing around with the buffers procuded this:
+
+![random positions](images/random_vertices.gif)
+
+
+**Rendering a Cube**
 
 Rendering a cube with random vertex colors, which are updated in each frame.
 

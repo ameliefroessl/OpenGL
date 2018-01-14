@@ -59,21 +59,32 @@ int main() {
     }
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     
-    
-    GLuint vao = createVAO(); //create and bind VAO, needs to happen after winodw creation
-    GLuint vb = createTriangle(); //create triangle vertecies and returna buffer handle to buffer with them inside
-    GLuint vbCube = createCube();
-    
     glm::mat4 mvp = modelViewProjection(true); //get a model view projection matrix
-    GLuint programID = loadShaders( "triangleVertexShader.glsl", "triangleFragmentShader.glsl" );//load glsl shaders
-    GLuint matrixID = glGetUniformLocation(programID, "MVP"); //get handle to uniform varibale in vertex shader
     
-    //z-buffer depth test enabling
+//    GLuint programID = loadShaders( "triangleVertexShader.glsl", "triangleFragmentShader.glsl" );//load glsl shaders
+    GLuint programID = loadShaders( "textureVertexShader.glsl", "textureFragmentShader.glsl" );//load glsl shaders
+    GLuint matrixID = glGetUniformLocation(programID, "MVP"); //mvp uniform in vertex shader
+    GLuint textureSampleID = glGetUniformLocation(programID, "myTextureSampler"); // texture uniform in vertex shader
+    
+    
+    //z-buffer depth test enabling to only draw the ones that are closer to the camera
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);// Accept fragment if it closer to the camera than the former one
     
+    //https://www.khronos.org/opengl/wiki/Tutorial2:_VAOs,_VBOs,_Vertex_and_Fragment_Shaders_(C_/_SDL)
+    GLuint vertexArrayObject = createVAO(); //create and bind VAO, needs to happen after winodw creation
+    GLuint vertexbuffer = createTriangle(); //create triangle vertecies and returna buffer handle to buffer with them inside
+    GLuint vertexBufferCube = createCube();
+    
+    //color information for shaders
     GLuint colorbuffer = genAndBindBufferID();
     static GLfloat g_color_buffer_data[12*3*3]; //buffer holding color information
+    
+    //texture information for shaders
+    GLuint textureBuffer = createTextureUV();
+    
+    //texture information for shaders
+    GLuint texture = loadBMPCustom("uvtemplate2.bmp");
     
     
     do{
@@ -81,30 +92,35 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glUseProgram(programID);
         
-        glUniformMatrix4fv(matrixID, 1, GL_FALSE, &mvp[0][0]);
+        glUniformMatrix4fv(matrixID, 1, GL_FALSE, &mvp[0][0]);//set the uniform variable in the shader
         
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        // Set our "myTextureSampler" sampler to use Texture Unit 0
+        glUniform1i(textureSampleID, 0);
+        
+        //vertices attribute at location 0 <- indicated which buffer for shader
         glEnableVertexAttribArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, vbCube);
-        glVertexAttribPointer(
-                              0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-                              3,                  // size
-                              GL_FLOAT,           // type
-                              GL_FALSE,           // normalized?
-                              0,                  // stride
-                              (void*)0            // array buffer offset
-                              );
+        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferCube);
+        glVertexAttribPointer(0,3,GL_FLOAT, GL_FALSE,0,(void*)0);
         
-
-        fillColorBuffer(g_color_buffer_data, 12*3); //reload the color buffer every frame
-
+        //attribute at location 1 this is random color
+//        glEnableVertexAttribArray(1);
+//        fillColorBuffer(g_color_buffer_data, 12*3); //reload the color buffer every frame
+//        glBindBuffer(GL_ARRAY_BUFFER,colorbuffer);
+//        glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
+//        glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,0,(void*)0);
+        
+        // texture buffer
         glEnableVertexAttribArray(1);
-        glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
-        glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,0,(void*)0); 
+        glBindBuffer(GL_ARRAY_BUFFER,textureBuffer);
+        glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE,0,(void*)0); // 2 instead of 3 (2 UV corrdinates)
+
         
         // Draw the triangle (s) !
         glDrawArrays(GL_TRIANGLES, 0, 3*12); // Starting from vertex 0; 3 vertices total -> 1 triangle or for the cube... we have 12 triangle
         glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
         
         // Swap buffers
         glfwSwapBuffers(window);
@@ -115,9 +131,9 @@ int main() {
           glfwWindowShouldClose(window) == 0 );
     
     // Cleanup VBO and shader
-    glDeleteBuffers(1, &vbCube);
+    glDeleteBuffers(1, &vertexBufferCube);
     glDeleteProgram(programID);
-    glDeleteVertexArrays(1, &vao);
+    glDeleteVertexArrays(1, &vertexArrayObject);
     
     // Close OpenGL window and terminate GLFW
     glfwTerminate();

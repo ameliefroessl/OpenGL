@@ -14,6 +14,9 @@
 // loads the glsl shaders from the paths
 GLuint loadShaders(const char * vertex_file_path,const char * fragment_file_path);
 
+// load a BMP file
+GLuint loadBMPCustom(const char * imagepath);
+
 //returns a model view projection matrix
 glm::mat4 modelViewProjection();
 
@@ -31,6 +34,9 @@ GLuint createCube();
 
 //fills a buffer with set random cube colors
 GLuint createCubeColors();
+
+//fils a buffer with 2 uv coordinates for each vertex of the cube
+GLuint createTextureUV();
 
 // fills a buffer with random cube colors, not set
 void fillColorBuffer(GLfloat * buffer, int bufferSize);
